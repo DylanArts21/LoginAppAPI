@@ -9,63 +9,106 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.loginapp.ui.theme.LoginAppTheme
 
 @Composable
 fun RegisterScreen(
     viewModel: AuthViewModel = viewModel(),
-    onBackToLogin: () -> Unit
+    onBackToLogin: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val message by viewModel.message
+    val Black = MaterialTheme.colorScheme.primary
+    val White = MaterialTheme.colorScheme.secondary
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("Register", style = MaterialTheme.typography.headlineLarge)
-
-        Spacer(Modifier.height(20.dp))
-
-        OutlinedTextField(
-            value = viewModel.email.value,
-            onValueChange = { viewModel.email.value = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
-
-        OutlinedTextField(
-            value = viewModel.password.value,
-            onValueChange = { viewModel.password.value = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
-
-        Spacer(Modifier.height(20.dp))
-
-        Button(
-            onClick = { viewModel.register(onBackToLogin) },
-            modifier = Modifier.fillMaxWidth()
+    Surface {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("Register")
-        }
+            Text("Register", style = MaterialTheme.typography.headlineLarge,
+                color = White)
 
-        TextButton(onClick = { onBackToLogin() }) {
-            Text("Sudah punya akun? Login")
-        }
+            Spacer(Modifier.height(20.dp))
 
-        Spacer(Modifier.height(10.dp))
-        Text(message, color = MaterialTheme.colorScheme.primary)
+            OutlinedTextField(
+                value = viewModel.email.value,
+                onValueChange = { viewModel.email.value = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = White,
+                    unfocusedTextColor = White,
+                    focusedContainerColor = Black,
+                    unfocusedContainerColor = Black,
+                )
+            )
+
+            OutlinedTextField(
+                value = viewModel.password.value,
+                onValueChange = { viewModel.password.value = it },
+                label = { Text("Password") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = White,
+                    unfocusedTextColor = White,
+                    focusedContainerColor = Black,
+                    unfocusedContainerColor = Black,
+                )
+            )
+
+            Spacer(Modifier.height(20.dp))
+
+            Button(
+                onClick = { viewModel.register(onBackToLogin) },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = White,
+                    contentColor = Black
+                )
+            ) {
+                Text("Register")
+            }
+
+            TextButton(onClick = { onBackToLogin() }) {
+                Text("Sudah punya akun? Login", color = White)
+            }
+
+            Spacer(Modifier.height(10.dp))
+            Text(message, color = White)
+        }
+    }
+}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewRegister() {
+//    MaterialTheme {
+//        RegisterScreen(onBackToLogin = {})
+//    }
+//}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewRegisterDark() {
+    MaterialTheme {
+        LoginAppTheme(darkTheme = true, dynamicColor = false) {
+            RegisterScreen(onBackToLogin = {})
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewRegister() {
+fun PreviewRegisterLight() {
     MaterialTheme {
-        RegisterScreen(onBackToLogin = {})
+        LoginAppTheme(darkTheme = false, dynamicColor = false) {
+            RegisterScreen(onBackToLogin = {})
+        }
     }
 }
